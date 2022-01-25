@@ -1,5 +1,6 @@
 import { Box, Button, Text, TextField, Image } from "@skynexui/components";
 import appConfig from "../config.json";
+import React from "react";
 
 function GlobalStyle() {
   return (
@@ -50,7 +51,9 @@ function Title(props) {
 }
 
 function HomePage() {
-  const username = "evelynsba";
+  // const username = "evelynsba";
+
+  const [username, setUsername] = React.useState('');
   return (
     <>
       <GlobalStyle />
@@ -109,8 +112,27 @@ function HomePage() {
             >
               {appConfig.name}
             </Text>
-
+            
+              {/* <input type="text"
+              value={username}
+              onChange={function(event){
+                console.log('usuario digitou', event.target.value);
+                // variavel com o retorno do valor
+                const valor = event.target.value;
+                // trocar o valor visivel 
+                setUsername(valor)
+              }} */}
             <TextField
+            value={username}
+            onChange={function(event){
+              console.log('usuario digitou', event.target.value);
+              // variavel com o retorno do valor
+              const valor = event.target.value;
+              // trocar o valor visivel 
+              setUsername(valor)
+            }
+          }
+
               fullWidth
               textFieldColors={{
                 neutral: {
