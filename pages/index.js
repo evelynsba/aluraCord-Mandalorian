@@ -1,15 +1,14 @@
 import { Box, Button, Text, TextField, Image } from "@skynexui/components";
 import appConfig from "../config.json";
 import React from "react";
-import {useRouter} from 'next/router';
-
-
+import { useRouter } from "next/router";
 
 function Title(props) {
   const Tag = props.tag;
   return (
     <>
-      <Tag>{props.children}</Tag><br/>
+      <Tag>{props.children}</Tag>
+      <br />
 
       <style jsx>{`
         ${Tag} {
@@ -25,12 +24,11 @@ function Title(props) {
 function HomePage() {
   // const username = "evelynsba";
 
-  const [username, setUsername] = React.useState('');
+  const [username, setUsername] = React.useState("");
   const router = useRouter();
 
   return (
     <>
-      <GlobalStyle />
       <Box
         styleSheet={{
           display: "flex",
@@ -59,18 +57,23 @@ function HomePage() {
             borderRadius: "5px",
             padding: "32px",
             margin: "16px",
+            backgroundColor: "rgba(0, 0, 0, 0.63)",
+            border: "1px solid rgba(0, 0, 0, 0.88)",
             boxShadow: "0 2px 10px 0 rgb(0 0 0 / 20%)",
-            backgroundColor: appConfig.theme.colors.neutrals[600],
+            borderColor: appConfig.theme.colors.neutrals[999],
+            boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)",
+            backdropFilter: "blur(2.6px)",
+            webkitBackdropFilter: "blur(2.6px)",
           }}
         >
           {/* Formulário */}
           <Box
             as="form"
-            onSubmit={function(eventsInfo){
-              //previnir o refresh 
+            onSubmit={function (eventsInfo) {
+              //previnir o refresh
               eventsInfo.preventDefault();
-              console.log('form subimeted')
-              router.push('/chat');
+              console.log("form subimeted");
+              router.push("/chat");
               //primeira forma de fazer o redirecionamento
               // window.location.href = '/chat';
             }}
@@ -94,8 +97,8 @@ function HomePage() {
             >
               {appConfig.name}
             </Text>
-            
-              {/* <input type="text"
+
+            {/* <input type="text"
               value={username}
               onChange={function(event){
                 console.log('usuario digitou', event.target.value);
@@ -105,16 +108,14 @@ function HomePage() {
                 setUsername(valor)
               }} */}
             <TextField
-            value={username}
-            onChange={function(event){
-              console.log('usuario digitou', event.target.value);
-              // variavel com o retorno do valor
-              const valor = event.target.value;
-              // trocar o valor visivel 
-              setUsername(valor)
-            }
-          }
-
+              value={username}
+              onChange={function (event) {
+                console.log("usuario digitou", event.target.value);
+                // variavel com o retorno do valor
+                const valor = event.target.value;
+                // trocar o valor visivel
+                setUsername(valor);
+              }}
               fullWidth
               textFieldColors={{
                 neutral: {
@@ -147,12 +148,14 @@ function HomePage() {
               alignItems: "center",
               maxWidth: "200px",
               padding: "16px",
-              backgroundColor: appConfig.theme.colors.neutrals[800],
-              border: "1px solid",
-              borderColor: appConfig.theme.colors.neutrals[999],
               borderRadius: "10px",
               flex: 1,
               minHeight: "240px",
+              backgroundColor: "rgba(0, 0, 0, 0.23)",
+              border: "1px solid rgba(0, 0, 0, 0.88)",
+              boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)",
+              backdropFilter: "blur(2.7px)",
+              webkitBackdropFilter: "blur(2.7px)",
             }}
           >
             <Image
