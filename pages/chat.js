@@ -8,17 +8,26 @@ export default function ChatPage() {
   // ./Sua lógica vai aqui
   const [message, setMessage] = React.useState("");
 
-  // this is going to be an array of messages 
+  // this is going to be an array of messages
   const [messageList, setMessageList] = React.useState([]);
 
-  function handleNewMessage
-                    // we need to call the method setMessageList, to push a new message into de array(newMessage){
-      setMessageList([
-          ...messageList,
-          newMessage,
-      ]);
-      setMessage("");
+  function handleNewMessage(newMessage) {
+    const message = {
+      id: messageList.length,
+      from: "me",
+      content: newMessage,
+    };
+    // we need to call the method setMessageList, to push a new message into de array(newMessage){
+    setMessageList([
+        message,
+        ...messageList, 
+        
+    ]);
+    setMessage('');
   }
+
+
+
   return (
     <Box
       styleSheet={{
@@ -69,15 +78,15 @@ export default function ChatPage() {
         >
           {/* testando a variavel valor q esta pegando o valor do input
             Ta mudando o valor? {message} */}
-          {/* <MessageList mensagens={[]} /> */}
-          {messageList.map((currentMessage) =>{
-              console.log(currentMessage)
-              return(
-                  <li>
-                      {currentMessage}
-                  </li>
-              )
-          })}
+          <MessageList messages={messageList}  setMessages={setMessageList}/>
+          {/* {messageList.map((currentMessage) => {
+            console.log(currentMessage);
+            return (
+              <li key={currentMessage.id}>
+                {currentMessage.from}: {currentMessage.content}
+              </li>
+            );
+          })} */}
 
           <Box
             as="form"
@@ -93,11 +102,10 @@ export default function ChatPage() {
                 setMessage(messageValue);
               }}
               onKeyPress={(event) => {
-                if(event.key === "Enter") {
-                    event.preventDefault();
+                if (event.key === "Enter") {
+                  event.preventDefault();
                   console.log(event);
-
-                    handleNewMessage();
+                  handleNewMessage(message);
                 }
               }}
               placeholder="Insira sua mensagem aqui..."
@@ -114,6 +122,7 @@ export default function ChatPage() {
               }}
             />
             <Button
+            type="submit"
               styleSheet={{
                 padding: "10px",
                 // textAlign: "center",
@@ -124,7 +133,10 @@ export default function ChatPage() {
               variant="tertiary"
               colorVariant="primary"
               label="Send"
-              href="/"
+              onClick={(event) =>{
+                event.preventDefault();
+                handleNewMessage(message);
+            }}
             />
           </Box>
         </Box>
@@ -158,12 +170,20 @@ function Header() {
 }
 
 function MessageList(props) {
-  console.log("MessageList", props);
+    function remove(message) {
+        const newMessageList = props.messages.filter((deleteMessage) =>{
+            return message.id !== deleteMessage.id
+        })
+        props.setMessages(newMessageList)
+        alert("are you sure you're going to delete this message?")
+    }
+    
+//   console.log("MessageList", props);
   return (
     <Box
       tag="ul"
       styleSheet={{
-        overflow: "scroll",
+        overflowY: "scroll",
         display: "flex",
         flexDirection: "column-reverse",
         flex: 1,
@@ -171,47 +191,69 @@ function MessageList(props) {
         marginBottom: "16px",
       }}
     >
-      <Text
-        key={mensagem.id}
-        tag="li"
-        styleSheet={{
-          borderRadius: "5px",
-          padding: "6px",
-          marginBottom: "12px",
-          hover: {
-            backgroundColor: appConfig.theme.colors.neutrals[700],
-          },
-        }}
-      >
-        <Box
-          styleSheet={{
-            marginBottom: "8px",
-          }}
-        >
-          <Image
-            styleSheet={{
-              width: "20px",
-              height: "20px",
-              borderRadius: "50%",
-              display: "inline-block",
-              marginRight: "8px",
-            }}
-            src={`https://github.com/vanessametonini.png`}
-          />
-          <Text tag="strong">{mensagem.de}</Text>
+      {props.messages.map((message) => {          
+        return (
           <Text
+            key={message.id}
+            tag="li"
             styleSheet={{
-              fontSize: "10px",
-              marginLeft: "8px",
-              color: appConfig.theme.colors.neutrals[300],
+              borderRadius: "5px",
+              padding: "6px",
+              marginBottom: "12px",
+              hover: {
+                backgroundColor: appConfig.theme.colors.neutrals[700],
+              },
             }}
-            tag="span"
           >
-            {new Date().toLocaleDateString()}
+            <Box
+              styleSheet={{
+                marginBottom: "8px",
+              }}
+            >
+              <Image
+                styleSheet={{
+                  width: "20px",
+                  height: "20px",
+                  borderRadius: "50%",
+                  display: "inline-block",
+                  marginRight: "8px",
+                }}
+                src={`https://github.com/vanessametonini.png`}
+              />
+              <Text tag="strong">{message.from}</Text>
+              <Text
+                styleSheet={{
+                  fontSize: "10px",
+                  marginLeft: "8px",
+                  color: appConfig.theme.colors.neutrals[300],
+                }}
+                tag="span"
+              >
+                {new Date().toLocaleDateString()}
+              </Text>
+              <Button
+               label="delete"
+               type="button"
+               onClick={(event) =>{
+                   event.preventDefault();
+                   remove(message);
+               }}
+               styleSheet={{
+                   height: '15px',
+                   width: 'auto',
+                   marginLeft: '5%',
+                   backgroundColor: appConfig.theme.colors.neutrals[800],
+                   hover: {
+                       backgroundColor: appConfig.theme.colors.neutrals[999],
+                   }
+               }}
+              
+              />
+            </Box>
+            {message.content}
           </Text>
-        </Box>
-        {mensagem.texto}
-      </Text>
+        );
+      })}
     </Box>
-  );
+  )
 }
